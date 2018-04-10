@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">EvoCit</string>
+    <string name="Name">Usuário</string>
+    <string name="Password">Senha</string>
+    <string name="Login">Login</string>
+    <string name="conectado">Manter-se conectado</string>
+</resources>
