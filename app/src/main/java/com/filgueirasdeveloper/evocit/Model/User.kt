@@ -10,7 +10,7 @@ import java.io.Serializable
 class User{
     @Expose
     @DatabaseField(generatedId = true)
-    private var id  : Int      = 0
+    var id  : Int  = 0
 
     @Expose(serialize = false)
     @DatabaseField(canBeNull = false)
@@ -31,4 +31,5 @@ class User{
         this.email      = email
         this.password   = password
     }
+
 }

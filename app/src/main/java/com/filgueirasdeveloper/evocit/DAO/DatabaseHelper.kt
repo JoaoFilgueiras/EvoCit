@@ -2,7 +2,9 @@ package com.filgueirasdeveloper.evocit.DAO
 
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
+import android.database.sqlite.SQLiteException
 import android.database.sqlite.SQLiteOpenHelper
+import com.filgueirasdeveloper.evocit.Model.Event
 import com.filgueirasdeveloper.evocit.Model.User
 import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper
 import com.j256.ormlite.support.ConnectionSource
@@ -17,7 +19,15 @@ class DatabaseHelper : OrmLiteSqliteOpenHelper{
     constructor(context: Context) : super(context, DB_NAME, null, DB_VERSION)
 
     override fun onCreate(database: SQLiteDatabase?, connectionSource: ConnectionSource?) {
-        TableUtils.createTable(connectionSource, User::class.java)
+        try {
+
+            TableUtils.createTable(connectionSource, User::class.java)
+            TableUtils.createTable(connectionSource, Event::class.java)
+        }
+        catch ( exc : SQLiteException)
+        {
+            exc.printStackTrace()
+        }
     }
 
     override fun onUpgrade(database: SQLiteDatabase?, connectionSource: ConnectionSource?, oldVersion: Int, newVersion: Int) {
