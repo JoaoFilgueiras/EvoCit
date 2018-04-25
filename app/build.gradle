@@ -32,7 +32,12 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
 
     //other dependencies
+
+    //Retrofit
     implementation 'com.squareup.retrofit2:retrofit:2.3.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
-    implementation 'com.github.satyan:sugar:1.5'
+
+    //OrmLite
+    implementation 'com.j256.ormlite:ormlite-core:5.0'
+    implementation 'com.j256.ormlite:ormlite-android:5.0'
 }
