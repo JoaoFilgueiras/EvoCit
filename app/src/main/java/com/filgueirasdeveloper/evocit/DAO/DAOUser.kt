@@ -12,6 +12,4 @@ class DAOUser : BaseDaoImpl<User, Int>{
         initialize()
     }
 
-
-
 }
