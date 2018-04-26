@@ -1,5 +1,6 @@
 package com.filgueirasdeveloper.evocit
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.design.widget.NavigationView
@@ -58,14 +59,17 @@ class MenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         // Handle navigation view item clicks here.
         when (item.itemId) {
-            R.layout.activity_cadastro_evento -> {
-                // Handle the camera action
+            R.id.nav_createUser -> {
+                val intent = Intent(this, CadastroActivity::class.java)
+                startActivity(intent)
             }
-            R.layout.activity_map -> {
-
+            R.id.nav_createEvent -> {
+                val intent = Intent(this, CadastroEventoActivity::class.java)
+                startActivity(intent)
             }
-            R.layout.activity_cadastro -> {
-
+            R.id.nav_openMap -> {
+                val intent = Intent(this, MapActivity::class.java)
+                startActivity(intent)
             }
         }
 
