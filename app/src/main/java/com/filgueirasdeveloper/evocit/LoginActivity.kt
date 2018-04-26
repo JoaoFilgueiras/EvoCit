@@ -11,10 +11,7 @@ import com.filgueirasdeveloper.evocit.DAO.DAOUser
 import com.filgueirasdeveloper.evocit.DAO.DatabaseHelper
 import com.filgueirasdeveloper.evocit.Model.Event
 import com.filgueirasdeveloper.evocit.Model.User
-import com.filgueirasdeveloper.evocit.Service.AsyncCallback
-import com.filgueirasdeveloper.evocit.Service.RetrofitInitializer
-import com.filgueirasdeveloper.evocit.Service.UserRetro
-import com.filgueirasdeveloper.evocit.Service.UserService
+import com.filgueirasdeveloper.evocit.Service.*
 import kotlinx.android.synthetic.main.activity_login.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -41,7 +38,7 @@ class LoginActivity : AppCompatActivity() {
         if(usuario.isNotEmpty() && usuario !=null  && senha.isNotEmpty() && senha != null){
             try {
 
-                var  conn = UserRetro()
+                var  conn = LoginService()
 
                 conn.sendNewPost(usuario, senha, this, object : AsyncCallback(){
                     override fun onSuccess(result: String) {
@@ -71,15 +68,6 @@ class LoginActivity : AppCompatActivity() {
         else{
             checkedUser()
         }
-
-//        var value = daoUser.create(user)
-//
-//        if (value == 1) {
-//            Toast.makeText(this, "sucesso", Toast.LENGTH_LONG).show()
-//            finish()
-//        } else {
-//            Toast.makeText(this, "falha no registo", Toast.LENGTH_LONG).show()
-//        }
     }
 
     private fun checkedUser(){
@@ -111,11 +99,6 @@ class LoginActivity : AppCompatActivity() {
             startActivity(Intent(this@LoginActivity, MenuActivity::class.java))
             finish()
         }
-    }
-
-    override fun onDestroy() {
-        dbHelper.close()
-        super.onDestroy()
     }
 
 }

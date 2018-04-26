@@ -23,10 +23,16 @@ class Event {
     @DatabaseField(canBeNull = false)
     var endereco : String = String()
 
-    constructor(titulo:String, date:String, endereco:String)
+    @Expose
+    @DatabaseField
+    var observacao : String = String()
+
+    constructor(titulo:String, date:String, endereco:String, observacao:String)
     {
         this.titulo       = titulo
         this.date         = date
         this.endereco     = endereco
+        this.observacao   = observacao
+
     }
 }

@@ -6,8 +6,7 @@ import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-class RetrofitInitializer {
-    val BASE_URL: String = "https://ludy.tech/"
+class RetrofitInitializer(BASE_URL: String) {
 
     val client : OkHttpClient = OkHttpClient()
 
