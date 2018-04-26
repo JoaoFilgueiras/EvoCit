@@ -14,22 +14,17 @@ class User{
 
     @Expose(serialize = false)
     @DatabaseField(canBeNull = false)
-    var name       : String   = String()
-
-    @Expose(serialize = false)
-    @DatabaseField(canBeNull = false, unique = true)
-    var email      : String   = String()
+    var login       : String   = String()
 
     @DatabaseField(canBeNull = false)
-    var password   : String   = String()
+    var senha   : String   = String()
 
     constructor()
 
-    constructor(name:String, email:String, password:String)
+    constructor(name:String, password:String)
     {
-        this.name       = name
-        this.email      = email
-        this.password   = password
+        this.login    = name
+        this.senha    = password
     }
 
 }
