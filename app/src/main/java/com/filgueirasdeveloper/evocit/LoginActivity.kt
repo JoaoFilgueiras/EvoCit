@@ -38,9 +38,12 @@ class LoginActivity : AppCompatActivity() {
         val conectado = manter_conectado.isChecked()
 
         if(usuario.isNotEmpty() && senha.isNotEmpty()){
+            var user =  User()
+            user.login = usuario
+            user.senha = senha
 
             var  conn = UserRetro()
-            conn.sendNewGet(this, object : AsyncCallback(){
+            conn.sendNewPost(user, this, object : AsyncCallback(){
                 override fun onSuccess(result: String) {
                   Toast.makeText(this@LoginActivity, result, Toast.LENGTH_SHORT).show()
                 }

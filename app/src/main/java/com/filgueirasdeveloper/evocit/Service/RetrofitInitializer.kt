@@ -7,12 +7,11 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 class RetrofitInitializer {
-    val BASE_URL: String = "https://api.myjson.com/bins/rkfm7/"
+    val BASE_URL: String = "https://ludy.tech/"
 
     val client : OkHttpClient = OkHttpClient()
 
     val gson : Gson = GsonBuilder()
-            .setLenient()
             .create()
 
     val retrofit: Retrofit = Retrofit.Builder()

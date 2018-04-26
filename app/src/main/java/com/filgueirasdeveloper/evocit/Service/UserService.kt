@@ -6,11 +6,7 @@ import retrofit2.Call
 import retrofit2.http.*
 
 interface UserService {
-    @Headers("Content-Type: application/json")
-    @POST("/TESTE")
+    @Headers("Content-Type: application/x-www-form-urlencoded")
+    @POST("aulas/UserAuth/auth/")
     fun getLogin(@Body user: User) : Call<User>
-
-    @GET("/")
-    fun getAll() : Call<Event>
-
 }
