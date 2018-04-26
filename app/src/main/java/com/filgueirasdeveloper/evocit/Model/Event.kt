@@ -17,13 +17,13 @@ class Event {
 
     @Expose(serialize = false)
     @DatabaseField(canBeNull = false)
-    var  date : Date = Date()
+    var  date : String = String()
 
     @Expose(serialize = false)
     @DatabaseField(canBeNull = false)
     var endereco : String = String()
 
-    constructor(titulo:String, date:Date, endereco:String)
+    constructor(titulo:String, date:String, endereco:String)
     {
         this.titulo       = titulo
         this.date         = date

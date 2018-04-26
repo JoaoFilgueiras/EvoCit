@@ -22,7 +22,6 @@ class DatabaseHelper : OrmLiteSqliteOpenHelper{
         try {
 
             TableUtils.createTable(connectionSource, User::class.java)
-            TableUtils.createTable(connectionSource, Event::class.java)
         }
         catch ( exc : SQLiteException)
         {
