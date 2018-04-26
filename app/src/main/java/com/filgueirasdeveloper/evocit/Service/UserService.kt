@@ -1,12 +1,11 @@
 package com.filgueirasdeveloper.evocit.Service
 
-import com.filgueirasdeveloper.evocit.Model.Event
-import com.filgueirasdeveloper.evocit.Model.User
+import com.filgueirasdeveloper.evocit.Model.Login
 import retrofit2.Call
 import retrofit2.http.*
 
 interface UserService {
-    @Headers("Content-Type: application/x-www-form-urlencoded")
+    @FormUrlEncoded
     @POST("aulas/UserAuth/auth/")
-    fun getLogin(@Body user: User) : Call<User>
+    fun getLogin(@Field("login") login: String, @Field("senha") senha: String) : Call<Login>
 }

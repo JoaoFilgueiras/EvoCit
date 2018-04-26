@@ -1,8 +1,11 @@
 package com.filgueirasdeveloper.evocit
 
+import android.content.Context
+import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import com.filgueirasdeveloper.evocit.DAO.DAOUser
 import com.filgueirasdeveloper.evocit.DAO.DatabaseHelper
@@ -27,34 +30,47 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
-        btn_login.setOnClickListener({
-            login()
-        })
+        getSharedPreference()
     }
 
-    fun login(){
+    fun login(v: View){
         var usuario = username.text.toString()
         var senha   = password.text.toString()
-        val conectado = manter_conectado.isChecked()
+        val checked = manter_conectado.isChecked()
 
-        if(usuario.isNotEmpty() && senha.isNotEmpty()){
-            var user =  User()
-            user.login = usuario
-            user.senha = senha
+        if(usuario.isNotEmpty() && usuario !=null  && senha.isNotEmpty() && senha != null){
+            try {
 
-            var  conn = UserRetro()
-            conn.sendNewPost(user, this, object : AsyncCallback(){
-                override fun onSuccess(result: String) {
-                  Toast.makeText(this@LoginActivity, result, Toast.LENGTH_SHORT).show()
-                }
+                var  conn = UserRetro()
 
-                override fun onFailure(result: String) {
-                    Toast.makeText(this@LoginActivity, result, Toast.LENGTH_SHORT).show()
-                }
-            })
+                conn.sendNewPost(usuario, senha, this, object : AsyncCallback(){
+                    override fun onSuccess(result: String) {
+                        if(result.isNotEmpty()){
+                            if(checked == true){
+                                sharedPreference(result)
+                            }
+                            startActivity(Intent(this@LoginActivity, MenuActivity::class.java))
+                            finish()
+                        }
+                        else{
+                            username.error = "Usuário ou senha invalido!"
+                            Toast.makeText(this@LoginActivity, "Usuário ou senha invalido!", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+
+                    override fun onFailure(result: String) {
+                        Toast.makeText(this@LoginActivity, result, Toast.LENGTH_SHORT).show()
+                    }
+                })
+            }
+            catch (e: Exception){
+
+            }
+
         }
-
-
+        else{
+            checkedUser()
+        }
 
 //        var value = daoUser.create(user)
 //
@@ -64,6 +80,37 @@ class LoginActivity : AppCompatActivity() {
 //        } else {
 //            Toast.makeText(this, "falha no registo", Toast.LENGTH_LONG).show()
 //        }
+    }
+
+    private fun checkedUser(){
+        var usuario = username.text.toString()
+        var senha   = password.text.toString()
+
+        if(usuario.isEmpty()){
+            username.error = "Por Favor Informe o usuario"
+        }
+
+        if(senha.isEmpty()){
+            password.error = "Por Favor Informe a senha!"
+        }
+    }
+
+    private fun sharedPreference( token: String){
+        val myPreference = getSharedPreferences("myPreference", Context.MODE_PRIVATE)
+        val editor = myPreference.edit()
+        editor.putString("_token", token)
+        editor.apply()
+    }
+
+    private fun getSharedPreference(){
+        val myPreference = getSharedPreferences("myPreference", Context.MODE_PRIVATE)
+        val token        = myPreference.getString("_token", "")
+
+        if(token.toString().isNotEmpty())
+        {
+            startActivity(Intent(this@LoginActivity, MenuActivity::class.java))
+            finish()
+        }
     }
 
     override fun onDestroy() {
