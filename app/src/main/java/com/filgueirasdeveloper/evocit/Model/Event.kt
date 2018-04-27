@@ -27,6 +27,8 @@ class Event {
     @DatabaseField
     var observacao : String = String()
 
+    constructor()
+
     constructor(titulo:String, date:String, endereco:String, observacao:String)
     {
         this.titulo       = titulo

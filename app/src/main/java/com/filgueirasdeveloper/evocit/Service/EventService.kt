@@ -17,7 +17,8 @@ class EventService {
                 response?.let {
                     response.body()?.let {
                         val result = response.body()
-                        var str = ""
+                        var str = "ok"
+                        callback.onSuccess(str)
                     }
                 }
             }
@@ -27,5 +28,17 @@ class EventService {
             }
         })
 
+    }
+
+    fun storeEvent(context: Context){
+        sendNewGet(context, object  : AsyncCallback(){
+            override fun onSuccess(result: String) {
+
+            }
+
+            override fun onFailure(result: String) {
+                super.onFailure(result)
+            }
+        })
     }
 }

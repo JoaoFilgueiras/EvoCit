@@ -20,8 +20,8 @@ class DatabaseHelper : OrmLiteSqliteOpenHelper{
 
     override fun onCreate(database: SQLiteDatabase?, connectionSource: ConnectionSource?) {
         try {
-
             TableUtils.createTable(connectionSource, User::class.java)
+            TableUtils.createTable(connectionSource, Event::class.java)
         }
         catch ( exc : SQLiteException)
         {

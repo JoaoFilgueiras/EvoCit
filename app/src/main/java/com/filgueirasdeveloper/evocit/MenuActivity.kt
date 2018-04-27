@@ -1,5 +1,6 @@
 package com.filgueirasdeveloper.evocit
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.Snackbar
@@ -60,16 +61,21 @@ class MenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         // Handle navigation view item clicks here.
         when (item.itemId) {
             R.id.nav_createUser -> {
-                val intent = Intent(this, CadastroActivity::class.java)
+                val intent = Intent(this@MenuActivity, CadastroActivity::class.java)
                 startActivity(intent)
             }
             R.id.nav_createEvent -> {
-                val intent = Intent(this, CadastroEventoActivity::class.java)
+                val intent = Intent(this@MenuActivity, CadastroEventoActivity::class.java)
                 startActivity(intent)
             }
             R.id.nav_openMap -> {
-                val intent = Intent(this, MapActivity::class.java)
-                startActivity(intent)
+                startActivity(Intent(this@MenuActivity, MapaActivity::class.java))
+            }
+            R.id.nav_logout -> {
+                val myPreference = getSharedPreferences("myPreference", Context.MODE_PRIVATE)
+                val editor = myPreference.edit().remove("_token").apply()
+                startActivity(Intent(this@MenuActivity, LoginActivity::class.java))
+                finish()
             }
         }
 
