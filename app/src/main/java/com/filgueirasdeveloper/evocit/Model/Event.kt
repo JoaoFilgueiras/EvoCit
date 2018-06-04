@@ -1,5 +1,6 @@
 package com.filgueirasdeveloper.evocit.Model
 
+import com.google.android.gms.maps.model.LatLng
 import com.google.gson.annotations.Expose
 import com.j256.ormlite.field.DatabaseField
 import com.j256.ormlite.table.DatabaseTable
@@ -22,6 +23,10 @@ class Event {
     @Expose(serialize = false)
     @DatabaseField(canBeNull = false)
     var endereco : String = String()
+
+    @Expose(serialize = false)
+    @DatabaseField(canBeNull = false)
+    lateinit var latLng : LatLng
 
     @Expose
     @DatabaseField

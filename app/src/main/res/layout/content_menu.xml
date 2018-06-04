@@ -8,4 +8,11 @@
     tools:context="com.filgueirasdeveloper.evocit.MenuActivity"
     tools:showIn="@layout/app_bar_menu">
 
+    <fragment
+        android:id="@+id/map"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:name="com.google.android.gms.maps.SupportMapFragment"></fragment>
+
+
 </android.support.constraint.ConstraintLayout>

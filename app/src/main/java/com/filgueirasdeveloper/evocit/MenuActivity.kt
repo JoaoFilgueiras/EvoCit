@@ -1,5 +1,6 @@
 package com.filgueirasdeveloper.evocit
 
+import android.app.ProgressDialog
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -10,15 +11,33 @@ import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.OnMapReadyCallback
+import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.CameraPosition
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MarkerOptions
 import kotlinx.android.synthetic.main.activity_menu.*
 import kotlinx.android.synthetic.main.app_bar_menu.*
 
-class MenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
+class MenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, OnMapReadyCallback, GoogleMap.OnMapClickListener{
+
+    private lateinit var mapFragment: SupportMapFragment
+    private lateinit var latLng: LatLng
+    private lateinit var googleMap: GoogleMap
+    private lateinit var progress: ProgressDialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_menu)
         setSupportActionBar(toolbar)
+
+        mapFragment = supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
+        mapFragment.getMapAsync(OnMapReadyCallback {
+            googleMap = it
+            googleMap.isMyLocationEnabled = true
+        })
 
         fab.setOnClickListener { view ->
             Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
@@ -31,6 +50,39 @@ class MenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         toggle.syncState()
 
         nav_view.setNavigationItemSelectedListener(this)
+    }
+
+    override fun onMapReady(p0: GoogleMap?) {
+        googleMap = googleMap
+        googleMap.setOnMapClickListener(this@MenuActivity)
+
+        val jampa = LatLng(-7.161954, -34.858543)
+
+        //mMap.mapType = GoogleMap.MAP_TYPE_SATELLITE
+
+        val cameraPosition = CameraPosition.Builder().zoom(15f).target(jampa).build()
+
+        // Add a marker in Sydney and move the camera
+
+        googleMap.addMarker(MarkerOptions().position(jampa).title("Sua Localização"))
+        googleMap.moveCamera(CameraUpdateFactory.newLatLng(jampa))
+        googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition))
+    }
+
+    override fun onMapClick(p0: LatLng?) {
+        this.latLng = latLng
+        progress = ProgressDialog(this)
+        progress.setTitle("buscando endereço ...")
+        progress.show()
+
+
+    }
+
+    fun createMarkers(latLng: LatLng, title: String, snippet: String): MarkerOptions{
+        return MarkerOptions()
+                .position(latLng)
+                .title(title)
+                .snippet(snippet)
     }
 
     override fun onBackPressed() {
