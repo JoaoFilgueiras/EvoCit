@@ -2,6 +2,8 @@ package com.filgueirasdeveloper.evocit
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -13,12 +15,14 @@ import com.google.android.gms.maps.model.MarkerOptions
 
 
 class MapaActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMapClickListener {
-    override fun onMapClick(p0: LatLng?) {
+    override fun onMapClick(p0: LatLng?)  {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
+
     private lateinit var mMap: GoogleMap
     private lateinit var latLng: LatLng
+    private lateinit var fusedLocationClient : FusedLocationProviderClient
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,6 +31,7 @@ class MapaActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMapCli
         val mapFragment = supportFragmentManager
                 .findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
     }
 
     /**
