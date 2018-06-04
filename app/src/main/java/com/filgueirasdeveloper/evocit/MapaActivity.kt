@@ -1,18 +1,24 @@
 package com.filgueirasdeveloper.evocit
 
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-
+import android.support.v7.app.AppCompatActivity
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 
-class MapaActivity : AppCompatActivity(), OnMapReadyCallback {
+
+
+class MapaActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMapClickListener {
+    override fun onMapClick(p0: LatLng?) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
 
     private lateinit var mMap: GoogleMap
+    private lateinit var latLng: LatLng
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,10 +40,18 @@ class MapaActivity : AppCompatActivity(), OnMapReadyCallback {
      */
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
+        mMap.setOnMapClickListener(this@MapaActivity)
+
+        val jampa = LatLng(-7.161954, -34.858543)
+
+        //mMap.mapType = GoogleMap.MAP_TYPE_SATELLITE
+
+        val cameraPosition = CameraPosition.Builder().zoom(15f).target(jampa).build()
 
         // Add a marker in Sydney and move the camera
-        val sydney = LatLng(-34.0, 151.0)
-        mMap.addMarker(MarkerOptions().position(sydney).title("Marker in Sydney"))
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney))
+
+        mMap.addMarker(MarkerOptions().position(jampa).title("Sua Localização"))
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(jampa))
+        mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
     }
 }
