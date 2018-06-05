@@ -38,7 +38,11 @@ dependencies {
     //OrmLite
     implementation 'com.j256.ormlite:ormlite-core:5.0'
     implementation 'com.j256.ormlite:ormlite-android:5.0'
-    implementation 'com.google.android.gms:play-services-maps:15.0.1'
-    implementation 'com.google.android.gms:play-services-location:11.6.0'
-    implementation 'com.google.android.gms:play-services-maps:15.0.1'
+
+    implementation 'com.google.android.gms:play-services-maps:11.8.0'
+    implementation 'com.google.android.gms:play-services-location:11.8.0'
+    implementation 'com.google.android.gms:play-services-places:11.8.0'
+
+    implementation 'com.google.android.gms:play-services-places:11.8.0'
+    implementation 'com.android.support:design:26.1.0'
 }

@@ -3,6 +3,7 @@ package com.filgueirasdeveloper.evocit
 import android.app.ProgressDialog
 import android.content.Context
 import android.content.Intent
+import android.location.Location
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.design.widget.NavigationView
@@ -37,7 +38,11 @@ class MenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         mapFragment.getMapAsync(OnMapReadyCallback {
             googleMap = it
             googleMap.isMyLocationEnabled = true
+            val location = LatLng(-7.171471, -34.857568);
+            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location,12f));
         })
+
+
 
         fab.setOnClickListener { view ->
             Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
@@ -55,7 +60,6 @@ class MenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onMapReady(p0: GoogleMap?) {
         googleMap = googleMap
         googleMap.setOnMapClickListener(this@MenuActivity)
-
         val jampa = LatLng(-7.161954, -34.858543)
 
         //mMap.mapType = GoogleMap.MAP_TYPE_SATELLITE
