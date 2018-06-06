@@ -9,6 +9,7 @@ import com.filgueirasdeveloper.evocit.DAO.DAOEvent
 import com.filgueirasdeveloper.evocit.DAO.DAOUser
 import com.filgueirasdeveloper.evocit.DAO.DatabaseHelper
 import com.filgueirasdeveloper.evocit.Model.Event
+import com.google.android.gms.maps.model.LatLng
 import kotlinx.android.synthetic.main.activity_cadastro_evento.*
 
 class CadastroEventoActivity : AppCompatActivity() {
@@ -26,9 +27,9 @@ class CadastroEventoActivity : AppCompatActivity() {
     }
 
     fun configureExtra(){
-        latLng = intent.getStringExtra(MenuActivity.REQUEST_LATLNG_EXTRA).split(',').toString()
-        latitude = latLng[0].toDouble()
-        longitude = latLng[1].toDouble()
+        latLng = intent.getStringExtra(MenuActivity.REQUEST_LATLNG_EXTRA).replace("lat/lng: (", " ").replace(")", " ")
+        latitude = latLng.split(",")[0].toDouble()
+        longitude = latLng.split(",")[1].toDouble()
     }
 
     fun saveEvent(v:View){
