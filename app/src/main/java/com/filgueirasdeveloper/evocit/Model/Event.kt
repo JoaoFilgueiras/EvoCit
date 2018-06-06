@@ -26,7 +26,11 @@ class Event {
 
     @Expose(serialize = false)
     @DatabaseField(canBeNull = false)
-    lateinit var latLng : LatLng
+    var lat : Double = 0.0
+
+    @Expose(serialize = false)
+    @DatabaseField(canBeNull = false)
+    var lng : Double = 0.0
 
     @Expose
     @DatabaseField
@@ -34,12 +38,13 @@ class Event {
 
     constructor()
 
-    constructor(titulo:String, date:String, endereco:String, observacao:String)
+    constructor(titulo:String, date:String, endereco:String, lat: Double, long: Double, observacao:String)
     {
         this.titulo       = titulo
         this.date         = date
         this.endereco     = endereco
         this.observacao   = observacao
-
+        this.lat          = lat
+        this.lng          = long
     }
 }

@@ -3,15 +3,23 @@ package com.filgueirasdeveloper.evocit
 import android.app.ProgressDialog
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.location.Location
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.design.widget.NavigationView
+import android.support.v4.app.ActivityCompat
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Toast
+import com.filgueirasdeveloper.evocit.DAO.DAOEvent
+import com.filgueirasdeveloper.evocit.DAO.DatabaseHelper
+import com.filgueirasdeveloper.evocit.Model.Event
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -24,10 +32,25 @@ import kotlinx.android.synthetic.main.app_bar_menu.*
 
 class MenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, OnMapReadyCallback, GoogleMap.OnMapClickListener{
 
-    private lateinit var mapFragment: SupportMapFragment
-    private lateinit var latLng: LatLng
-    private lateinit var googleMap: GoogleMap
     private lateinit var progress: ProgressDialog
+    private lateinit var mapFragment: SupportMapFragment
+    private lateinit var googleMap: GoogleMap
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
+
+    private lateinit var latLng: LatLng
+    private lateinit var lastLocation: Location
+
+    private lateinit var latLong: String
+
+    var dbHelper : DatabaseHelper = DatabaseHelper(this)
+    var daoEvent : DAOEvent = DAOEvent(dbHelper.connectionSource)
+
+    companion object {
+        private const val LOCATION_PERMISSION_REQUEST_CODE = 1
+        private const val REQUEST_CHECK_SETTINGS = 2
+        private const val PLACE_PICKER_REQUEST = 3
+        public const val REQUEST_LATLNG_EXTRA = "extra_lng"
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,14 +58,8 @@ class MenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         setSupportActionBar(toolbar)
 
         mapFragment = supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
-        mapFragment.getMapAsync(OnMapReadyCallback {
-            googleMap = it
-            googleMap.isMyLocationEnabled = true
-            val location = LatLng(-7.171471, -34.857568);
-            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location,12f));
-        })
-
-
+        mapFragment.getMapAsync(this)
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 
         fab.setOnClickListener { view ->
             Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
@@ -57,29 +74,44 @@ class MenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         nav_view.setNavigationItemSelectedListener(this)
     }
 
-    override fun onMapReady(p0: GoogleMap?) {
-        googleMap = googleMap
+    override fun onMapReady(p0: GoogleMap) {
+        googleMap = p0
+//        googleMap.uiSettings.isZoomControlsEnabled = true
         googleMap.setOnMapClickListener(this@MenuActivity)
-        val jampa = LatLng(-7.161954, -34.858543)
 
-        //mMap.mapType = GoogleMap.MAP_TYPE_SATELLITE
-
-        val cameraPosition = CameraPosition.Builder().zoom(15f).target(jampa).build()
-
-        // Add a marker in Sydney and move the camera
-
-        googleMap.addMarker(MarkerOptions().position(jampa).title("Sua Localização"))
-        googleMap.moveCamera(CameraUpdateFactory.newLatLng(jampa))
-        googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition))
+        setUpMap()
     }
 
+    private fun setUpMap(){
+        if (ActivityCompat.checkSelfPermission(this,
+                        android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this,
+                    arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION), MenuActivity.LOCATION_PERMISSION_REQUEST_CODE)
+            return
+        }
+
+        googleMap.isMyLocationEnabled = true
+
+        fusedLocationClient.lastLocation.addOnSuccessListener(this) { location ->
+            if (location != null) {
+                lastLocation = location
+                val currentLatLng = LatLng(location.latitude, location.longitude)
+                googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 15f))
+            }
+        }
+
+        var eventList: List<Event> = daoEvent.queryBuilder().orderBy("titulo", false).query()
+
+        eventList.forEach{
+            googleMap.addMarker(createMarkers(LatLng(it.lat, it.lng), it.titulo, it.endereco))
+        }
+
+    }
     override fun onMapClick(p0: LatLng?) {
-        this.latLng = latLng
-        progress = ProgressDialog(this)
-        progress.setTitle("buscando endereço ...")
-        progress.show()
-
-
+        latLong = p0.toString()
+        val intent = Intent(this@MenuActivity, CadastroEventoActivity::class.java)
+        intent.putExtra(REQUEST_LATLNG_EXTRA, latLong)
+        startActivity(intent)
     }
 
     fun createMarkers(latLng: LatLng, title: String, snippet: String): MarkerOptions{

@@ -1,5 +1,6 @@
 package com.filgueirasdeveloper.evocit
 
+import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -14,10 +15,20 @@ class CadastroEventoActivity : AppCompatActivity() {
 
     var dbHelper : DatabaseHelper = DatabaseHelper(this)
     var daoEvent : DAOEvent = DAOEvent(dbHelper.connectionSource)
+    var latLng : String = ""
+    var latitude: Double = 0.0
+    var longitude: Double = 0.0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_cadastro_evento)
+        configureExtra()
+    }
+
+    fun configureExtra(){
+        latLng = intent.getStringExtra(MenuActivity.REQUEST_LATLNG_EXTRA).split(',').toString()
+        latitude = latLng[0].toDouble()
+        longitude = latLng[1].toDouble()
     }
 
     fun saveEvent(v:View){
@@ -32,10 +43,16 @@ class CadastroEventoActivity : AppCompatActivity() {
         event.endereco = endereco
         event.observacao = observacao
 
+        if(latLng != null && latLng.isNotEmpty()){
+            event.lat = latitude
+            event.lng = longitude
+        }
+
 
 
         var evento = daoEvent.create(event)
         if(evento == 1){
+            startActivity(Intent(this@CadastroEventoActivity, MenuActivity::class.java))
             Toast.makeText(this, "Salvo com successo", Toast.LENGTH_SHORT)
             finish()
         }

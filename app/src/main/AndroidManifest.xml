@@ -51,6 +51,8 @@
         <activity
             android:name=".MapaActivity"
             android:label="@string/title_activity_mapa" />
+        <activity
+            android:name=".CadastroEventoActivity" />
     </application>
 
 </manifest>
