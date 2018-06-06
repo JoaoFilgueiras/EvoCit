@@ -22,21 +22,20 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/formText" />
 
-
-    <EditText
+    <com.vicmikhailau.maskededittext.MaskedEditText
         android:id="@+id/dateInput"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:ems="10"
+        android:layout_marginEnd="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="8dp"
         android:hint="@string/Data"
         android:inputType="date"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/nameEventoInput" />
+        app:layout_constraintTop_toBottomOf="@+id/nameEventoInput"
+        app:mask="##/##/####" />
 
     <EditText
         android:id="@+id/enderecoInput"
@@ -44,7 +43,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:ems="10"
         android:hint="@string/Endereco"
         android:inputType="textPostalAddress"
