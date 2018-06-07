@@ -68,6 +68,17 @@ class LoginActivity : AppCompatActivity() , MapaReceiver.ConnectionReceiverListe
                         Toast.makeText(this@LoginActivity, "Não foi possivel se autenticar !!", Toast.LENGTH_SHORT).show()
                     }
                 })
+
+                var  conn2 = EventService()
+                conn2.sendNewGet(this@LoginActivity,  object : AsyncCallback(){
+                    override fun onFailure(result: String) {
+                        Toast.makeText(this@LoginActivity, "Não foi possivel sincronizar!!", Toast.LENGTH_SHORT).show()
+                    }
+
+                    override fun onSuccess(result: String) {
+                        return
+                    }
+                })
             }
             catch (e: Exception){
                 Toast.makeText(this@LoginActivity, "Ocorreu um erro !!", Toast.LENGTH_SHORT).show()

@@ -5,6 +5,6 @@ import retrofit2.Call
 import retrofit2.http.GET
 
 interface EventCore {
-    @GET("/18sqmv")
+    @GET("bins/6zzaq")
     fun getAllEvents() : Call<List<Event>>
 }

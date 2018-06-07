@@ -326,7 +326,7 @@ class MenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     e.startResolutionForResult(this@MenuActivity,
                             REQUEST_CHECK_SETTINGS)
                 } catch (sendEx: IntentSender.SendIntentException) {
-                    
+
                 }
             }
         }

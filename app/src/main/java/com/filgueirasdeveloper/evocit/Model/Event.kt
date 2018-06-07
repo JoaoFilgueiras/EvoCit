@@ -1,13 +1,15 @@
 package com.filgueirasdeveloper.evocit.Model
 
+import android.os.Parcelable
 import com.google.android.gms.maps.model.LatLng
 import com.google.gson.annotations.Expose
 import com.j256.ormlite.field.DatabaseField
 import com.j256.ormlite.table.DatabaseTable
+import java.io.Serializable
 import java.util.*
 
 @DatabaseTable(tableName = "event")
-class Event {
+class Event :Serializable{
     @Expose
     @DatabaseField(generatedId = true)
     var id  : Int  = 0
