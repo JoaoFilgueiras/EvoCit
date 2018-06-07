@@ -102,6 +102,7 @@ class MenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         mapFragment.getMapAsync(this)
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
     }
+
     private fun setUpMap(){
         if (ActivityCompat.checkSelfPermission(this,
                         android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -197,16 +198,9 @@ class MenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         // Handle navigation view item clicks here.
         when (item.itemId) {
-            R.id.nav_createUser -> {
-                val intent = Intent(this@MenuActivity, CadastroActivity::class.java)
-                startActivity(intent)
-            }
             R.id.nav_createEvent -> {
-                val intent = Intent(this@MenuActivity, CadastroEventoActivity::class.java)
+                val intent = Intent(this@MenuActivity, AllEventsActivity::class.java)
                 startActivity(intent)
-            }
-            R.id.nav_openMap -> {
-                startActivity(Intent(this@MenuActivity, MapaActivity::class.java))
             }
             R.id.nav_logout -> {
                 val myPreference = getSharedPreferences("myPreference", Context.MODE_PRIVATE)
