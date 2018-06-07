@@ -2,6 +2,8 @@ package com.filgueirasdeveloper.evocit
 
 import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
+import android.net.ConnectivityManager
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -12,13 +14,16 @@ import com.filgueirasdeveloper.evocit.DAO.DatabaseHelper
 import com.filgueirasdeveloper.evocit.Model.Event
 import com.filgueirasdeveloper.evocit.Model.User
 import com.filgueirasdeveloper.evocit.Service.*
+import com.filgueirasdeveloper.evocit.receiver.MapaReceiver
+import com.filgueirasdeveloper.evocit.receiver.MyApplication
 import kotlinx.android.synthetic.main.activity_login.*
+import kotlinx.android.synthetic.main.content_menu.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 
-class LoginActivity : AppCompatActivity() {
+class LoginActivity : AppCompatActivity() , MapaReceiver.ConnectionReceiverListener {
 
     var dbHelper : DatabaseHelper = DatabaseHelper(this)
     var daoUser  : DAOUser        =  DAOUser(dbHelper.connectionSource)
@@ -26,6 +31,10 @@ class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
+
+        //check connection network
+        baseContext.registerReceiver(MapaReceiver(), IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION))
+        MyApplication.instance.setConnectionListener(this)
 
         getSharedPreference()
     }
@@ -56,7 +65,7 @@ class LoginActivity : AppCompatActivity() {
                     }
 
                     override fun onFailure(result: String) {
-                        Toast.makeText(this@LoginActivity, result, Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this@LoginActivity, "Não foi possivel se autenticar !!", Toast.LENGTH_SHORT).show()
                     }
                 })
             }
@@ -98,6 +107,12 @@ class LoginActivity : AppCompatActivity() {
         {
             startActivity(Intent(this@LoginActivity, MenuActivity::class.java))
             finish()
+        }
+    }
+
+    override fun onNetworkConnectionChanged(isConnected: Boolean) {
+        if(!isConnected){
+            Toast.makeText(this@LoginActivity, "Sem conexão com a internet", Toast.LENGTH_LONG).show()
         }
     }
 

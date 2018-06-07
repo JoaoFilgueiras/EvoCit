@@ -4,12 +4,15 @@ import android.app.AlertDialog
 import android.app.ProgressDialog
 import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.Canvas
+import android.graphics.Color
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.location.Location
+import android.net.ConnectivityManager
 import android.os.Bundle
 import android.support.annotation.DrawableRes
 import android.support.design.widget.Snackbar
@@ -26,6 +29,8 @@ import com.filgueirasdeveloper.evocit.DAO.DAOEvent
 import com.filgueirasdeveloper.evocit.DAO.DatabaseHelper
 import com.filgueirasdeveloper.evocit.Model.Event
 import com.filgueirasdeveloper.evocit.R.drawable.ic_directions_bike_black_24dp
+import com.filgueirasdeveloper.evocit.receiver.MapaReceiver
+import com.filgueirasdeveloper.evocit.receiver.MyApplication
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -35,8 +40,9 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
 import kotlinx.android.synthetic.main.activity_menu.*
 import kotlinx.android.synthetic.main.app_bar_menu.*
+import kotlinx.android.synthetic.main.content_menu.*
 
-class MenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, OnMapReadyCallback, GoogleMap.OnMapClickListener{
+class MenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, OnMapReadyCallback, GoogleMap.OnMapClickListener, MapaReceiver.ConnectionReceiverListener {
 
     private lateinit var progress: ProgressDialog
     private lateinit var mapFragment: SupportMapFragment
@@ -63,9 +69,12 @@ class MenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         setContentView(R.layout.activity_menu)
         setSupportActionBar(toolbar)
 
-        mapFragment = supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
-        mapFragment.getMapAsync(this)
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+        //check connection network
+        baseContext.registerReceiver(MapaReceiver(), IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION))
+        MyApplication.instance.setConnectionListener(this)
+
+        //set fragment map
+        fragmentMap()
 
         fab.setOnClickListener { view ->
             Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
@@ -88,6 +97,11 @@ class MenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         setUpMap()
     }
 
+    private fun fragmentMap(){
+        mapFragment = supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
+        mapFragment.getMapAsync(this)
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+    }
     private fun setUpMap(){
         if (ActivityCompat.checkSelfPermission(this,
                         android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -204,5 +218,14 @@ class MenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         drawer_layout.closeDrawer(GravityCompat.START)
         return true
+    }
+
+    override fun onNetworkConnectionChanged(isConnected: Boolean) {
+        if(!isConnected){
+            networkChange.setText("Sem conexão !! Para melhor experiência habilete a conexão")
+        }
+        else{
+            networkChange.setText("")
+        }
     }
 }

@@ -84,11 +84,13 @@ class CadastroEventoActivity : AppCompatActivity() {
     }
 
     fun getAddress(){
-        val geocoder = Geocoder(this, Locale.getDefault())
-        val address : List<Address> =  geocoder.getFromLocation(latitude, longitude, 1)
+        if(latitude != null && longitude != null){
+            val geocoder = Geocoder(this, Locale.getDefault())
+            val address : List<Address> =  geocoder.getFromLocation(latitude, longitude, 1)
 
-        enderecoInput.setText(address.get(0).getThoroughfare() + ", " + address.get(0).getFeatureName()+ " - " + address.get(0).getSubLocality())
-        enderecoInput.isEnabled = false
+            enderecoInput.setText(address.get(0).getThoroughfare() + ", " + address.get(0).getFeatureName()+ " - " + address.get(0).getSubLocality())
+            enderecoInput.isEnabled = false
+        }
     }
     override fun onDestroy() {
         dbHelper.close()
