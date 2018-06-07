@@ -70,7 +70,7 @@ class LoginActivity : AppCompatActivity() , MapaReceiver.ConnectionReceiverListe
                 })
             }
             catch (e: Exception){
-
+                Toast.makeText(this@LoginActivity, "Ocorreu um erro !!", Toast.LENGTH_SHORT).show()
             }
 
         }

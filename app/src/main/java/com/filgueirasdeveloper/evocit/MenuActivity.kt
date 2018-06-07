@@ -185,7 +185,7 @@ class MenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         background.setBounds(0, 0, background.getIntrinsicWidth(), background.getIntrinsicHeight())
 
         var vectorDrawable: Drawable = ContextCompat.getDrawable(context, int)
-        vectorDrawable.setBounds(40, 20, vectorDrawable.getIntrinsicWidth() + 40, vectorDrawable.getIntrinsicHeight() + 20);
+        vectorDrawable.setBounds(80, 60, vectorDrawable.getIntrinsicWidth() + 40, vectorDrawable.getIntrinsicHeight() + 20);
 
         var bitmap: Bitmap = Bitmap.createBitmap(background.getIntrinsicWidth(), background.getIntrinsicHeight(), Bitmap.Config.ARGB_8888)
         var canvas: Canvas = Canvas(bitmap)
@@ -246,7 +246,6 @@ class MenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
     }
 
-    // 1
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == REQUEST_CHECK_SETTINGS) {
@@ -266,13 +265,11 @@ class MenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
     }
 
-    // 2
     override fun onPause() {
         super.onPause()
         fusedLocationClient.removeLocationUpdates(locationCallback)
     }
 
-    // 3
     public override fun onResume() {
         super.onResume()
         if (!locationUpdateState) {
@@ -281,7 +278,7 @@ class MenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     private fun startLocationUpdates() {
-        //1
+
         if (ActivityCompat.checkSelfPermission(this,
                 android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this,
@@ -289,49 +286,47 @@ class MenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     LOCATION_PERMISSION_REQUEST_CODE)
             return
         }
-        //2
+
         fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, null /* Looper */)
     }
     private fun placeMarkerOnMap(location: LatLng) {
-        // 1
+
         val markerOptions = MarkerOptions().position(location)
-        // 2
+
         googleMap.addMarker(markerOptions)
     }
 
     private fun createLocationRequest() {
-        // 1
+
         locationRequest = LocationRequest()
-        // 2
+
         locationRequest.interval = 10000
-        // 3
+
         locationRequest.fastestInterval = 5000
         locationRequest.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
 
         val builder = LocationSettingsRequest.Builder()
                 .addLocationRequest(locationRequest)
 
-        // 4
+
         val client = LocationServices.getSettingsClient(this)
         val task = client.checkLocationSettings(builder.build())
 
-        // 5
+
         task.addOnSuccessListener {
             locationUpdateState = true
             startLocationUpdates()
         }
         task.addOnFailureListener { e ->
-            // 6
+
             if (e is ResolvableApiException) {
-                // Location settings are not satisfied, but this can be fixed
-                // by showing the user a dialog.
+
                 try {
-                    // Show the dialog by calling startResolutionForResult(),
-                    // and check the result in onActivityResult().
+
                     e.startResolutionForResult(this@MenuActivity,
                             REQUEST_CHECK_SETTINGS)
                 } catch (sendEx: IntentSender.SendIntentException) {
-                    // Ignore the error.
+                    
                 }
             }
         }
