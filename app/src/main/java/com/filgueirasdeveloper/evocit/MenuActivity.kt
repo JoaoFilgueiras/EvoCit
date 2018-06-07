@@ -1,14 +1,21 @@
 package com.filgueirasdeveloper.evocit
 
+import android.app.AlertDialog
 import android.app.ProgressDialog
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.graphics.Canvas
+import android.graphics.drawable.BitmapDrawable
+import android.graphics.drawable.Drawable
 import android.location.Location
 import android.os.Bundle
+import android.support.annotation.DrawableRes
 import android.support.design.widget.Snackbar
 import android.support.design.widget.NavigationView
 import android.support.v4.app.ActivityCompat
+import android.support.v4.content.ContextCompat
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
@@ -18,15 +25,14 @@ import android.widget.Toast
 import com.filgueirasdeveloper.evocit.DAO.DAOEvent
 import com.filgueirasdeveloper.evocit.DAO.DatabaseHelper
 import com.filgueirasdeveloper.evocit.Model.Event
+import com.filgueirasdeveloper.evocit.R.drawable.ic_directions_bike_black_24dp
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.CameraPosition
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.gms.maps.model.*
 import kotlinx.android.synthetic.main.activity_menu.*
 import kotlinx.android.synthetic.main.app_bar_menu.*
 
@@ -108,17 +114,46 @@ class MenuActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     }
     override fun onMapClick(p0: LatLng?) {
-        latLong = p0.toString()
-        val intent = Intent(this@MenuActivity, CadastroEventoActivity::class.java)
-        intent.putExtra(REQUEST_LATLNG_EXTRA, latLong)
-        startActivity(intent)
+        val builder = AlertDialog.Builder(this@MenuActivity)
+        builder.setTitle("Adicionar um evento")
+        builder.setMessage("Deseja realmente adicionar um evento ?")
+
+        builder.setPositiveButton("Sim") { dialog, which ->
+            latLong = p0.toString()
+            val intent = Intent(this@MenuActivity, CadastroEventoActivity::class.java)
+            intent.putExtra(REQUEST_LATLNG_EXTRA, latLong)
+            startActivity(intent)
+        }
+        builder.setNeutralButton("Cancelar"){_,_ ->
+        }
+        val dialog: AlertDialog = builder.create()
+        dialog.show()
     }
 
     fun createMarkers(latLng: LatLng, title: String, snippet: String): MarkerOptions{
+
+
+
         return MarkerOptions()
                 .position(latLng)
                 .title(title)
                 .snippet(snippet)
+                .icon(bitmapDescriptorFromVector(this@MenuActivity, R.drawable.ic_directions_bike_black_24dp))
+    }
+
+    fun bitmapDescriptorFromVector(context: Context, @DrawableRes int: Int): BitmapDescriptor? {
+
+        var background: Drawable = ContextCompat.getDrawable(context, R.drawable.ic_directions_bike_black_24dp)
+        background.setBounds(0, 0, background.getIntrinsicWidth(), background.getIntrinsicHeight())
+
+        var vectorDrawable: Drawable = ContextCompat.getDrawable(context, int)
+        vectorDrawable.setBounds(40, 20, vectorDrawable.getIntrinsicWidth() + 40, vectorDrawable.getIntrinsicHeight() + 20);
+
+        var bitmap: Bitmap = Bitmap.createBitmap(background.getIntrinsicWidth(), background.getIntrinsicHeight(), Bitmap.Config.ARGB_8888)
+        var canvas: Canvas = Canvas(bitmap)
+        background.draw(canvas)
+        vectorDrawable.draw(canvas)
+        return BitmapDescriptorFactory.fromBitmap(bitmap)
     }
 
     override fun onBackPressed() {

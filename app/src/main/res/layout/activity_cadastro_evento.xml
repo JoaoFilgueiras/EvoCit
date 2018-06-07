@@ -7,64 +7,119 @@
     android:visibility="visible"
     tools:context="com.filgueirasdeveloper.evocit.CadastroEventoActivity">
 
-    <EditText
-        android:id="@+id/nameEventoInput"
-        android:layout_width="0dp"
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/textInputLayoutNameEvent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="64dp"
-        android:ems="10"
-        android:hint="@string/EventName"
-        android:inputType="textPersonName"
+        android:layout_marginTop="24dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/formText" />
+        android:textColorHint="@color/grey"
+        app:layout_constraintTop_toBottomOf="@+id/formText">
 
-    <com.vicmikhailau.maskededittext.MaskedEditText
-        android:id="@+id/dateInput"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="10dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="8dp"
-        android:hint="@string/Data"
-        android:inputType="date"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/nameEventoInput"
-        app:mask="##/##/####" />
+        <EditText
+            android:id="@+id/nameEventoInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/grey"
+            android:ems="10"
+            android:hint="@string/EventName"
+            android:inputType="textPersonName"
+            android:shadowColor="@color/grey"
+            android:textColor="@color/black"
+            android:textColorHint="@color/grey"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/formText" />
 
-    <EditText
-        android:id="@+id/enderecoInput"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:ems="10"
-        android:hint="@string/Endereco"
-        android:inputType="textPostalAddress"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/dateInput" />
+    </android.support.design.widget.TextInputLayout>
 
-    <EditText
-        android:id="@+id/obsInput"
-        android:layout_width="0dp"
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/textInputLayoutDate"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:ems="10"
-        android:hint="@string/Obs"
-        android:inputType="textPersonName"
+        android:textColorHint="@color/grey"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/enderecoInput" />
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayoutAddress">
+
+        <com.vicmikhailau.maskededittext.MaskedEditText
+            android:id="@+id/dateInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/grey"
+            android:hint="@string/Data"
+            android:inputType="date"
+            android:shadowColor="@color/grey"
+            android:textColor="@color/black"
+            android:textColorHint="@color/grey"
+            app:mask="##/##/####"
+            tools:layout_editor_absoluteX="73dp"
+            tools:layout_editor_absoluteY="276dp" />
+
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/textInputLayoutAddress"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:textColorHint="@color/grey"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayoutNameEvent">
+
+        <EditText
+            android:id="@+id/enderecoInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/grey"
+            android:ems="10"
+            android:hint="@string/Endereco"
+            android:shadowColor="@color/grey"
+            android:textColor="@color/black"
+            android:textColorHint="@color/grey"
+            tools:layout_editor_absoluteX="100dp"
+            tools:layout_editor_absoluteY="232dp" />
+
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/textInputLayoutObs"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:textColorHint="@color/grey"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayoutDate">
+
+        <EditText
+            android:id="@+id/obsInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/grey"
+            android:ems="10"
+            android:hint="@string/Obs"
+            android:inputType="textMultiLine"
+            android:shadowColor="@color/grey"
+            android:textColor="@color/black"
+            android:textColorHint="@color/grey"
+            tools:layout_editor_absoluteX="28dp"
+            tools:layout_editor_absoluteY="322dp" />
+
+    </android.support.design.widget.TextInputLayout>
 
     <TextView
         android:id="@+id/formText"
@@ -72,7 +127,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="24dp"
         android:text="Cadastro Evento"
         android:textSize="18dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -84,15 +139,16 @@
         android:id="@+id/saveButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
         android:background="@color/colorPrimaryLight"
         android:onClick="saveEvent"
         android:text="@string/Salvar"
         android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/obsInput" />
+        android:textColor="@color/white"
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayoutObs" />
 
 </android.support.constraint.ConstraintLayout>
